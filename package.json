@@ -8,7 +8,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "clear": "rm -rf dist",
-    "rebuild": "yarn run clear && yarn run build"
+    "rebuild": "yarn run clear && yarn run build",
+    "eslint": "eslint --fix src"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
@@ -17,9 +18,12 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^5.1.0",
+    "prettier": "^2.4.1",
     "typescript": "^4.4.3"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 import path from 'path';
-import {linkSync, existsSync, readdirSync, statSync, Stats} from 'fs';
-import {ensureDirSync} from 'fs-extra';
+import { linkSync, existsSync, readdirSync, statSync, Stats } from 'fs';
+import { ensureDirSync } from 'fs-extra';
 
 type FileStat = { file: string; stat: Stats };
 type ForEachFilesCallback = (params: FileStat) => void;
@@ -11,13 +11,13 @@ export const forEachFiles = (folder: string, callback?: ForEachFilesCallback) =>
   // inner method
   const __readFiles = (root: string): FileStat[] => {
     let files: FileStat[] = [];
-    readdirSync(root).forEach(item => {
+    readdirSync(root).forEach((item) => {
       const fullPath = `${root}/${item}`;
       const stat = statSync(fullPath);
       if (stat.isDirectory()) {
         files = [...files, ...__readFiles(fullPath)];
       } else if (stat.isFile()) {
-        let temp = {file: fullPath, stat};
+        const temp = { file: fullPath, stat };
         if (callback) callback(temp);
         files.push(temp);
       }
@@ -37,6 +37,6 @@ export const hardLinkSync = (src: string, dest: string, file: string) => {
   ensureDirSync(destFileParentDir);
   linkSync(file, destFullPath);
   console.log(`-     : done...`);
-}
+};
 
 export const pathResolve = path.resolve;

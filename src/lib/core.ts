@@ -1,6 +1,6 @@
-import {readJsonSync} from 'fs-extra';
-import {findLinks} from './command';
-import {forEachFiles, hardLinkSync, pathResolve} from './utils'
+import { readJsonSync } from 'fs-extra';
+import { findLinks } from '@/lib/command';
+import { forEachFiles, hardLinkSync, pathResolve } from '@/lib/utils';
 
 type StartParams = {
   src: string;
@@ -9,11 +9,11 @@ type StartParams = {
   fullCheck?: boolean;
 };
 
-export const run = ({src, dest, excludes = [], fullCheck = false}: StartParams) => {
+export const run = ({ src, dest, excludes = [], fullCheck = false }: StartParams) => {
   console.log('========================== Start ===========================');
 
   let [skip, link, err, total] = [0, 0, 0, 0];
-  forEachFiles(src, ({file, stat}) => {
+  forEachFiles(src, ({ file, stat }) => {
     if (excludes.some((i: string) => file.startsWith(`${i}/`))) return;
 
     // Check whether hard links are required
@@ -23,9 +23,9 @@ export const run = ({src, dest, excludes = [], fullCheck = false}: StartParams) 
       needLink = true;
     } else if (stat.nlink > 1 && fullCheck) {
       // 当 nlink > 1 时, 说明该文件已有硬链接, 找找是否在 dest 中
-      const {result, message, data} = findLinks(dest, String(stat.ino));
+      const { result, message, data } = findLinks(dest, String(stat.ino));
       if (result) {
-        const {links} = data || {links: []};
+        const { links } = data || { links: [] };
         if (links.length === 0) {
           needLink = true;
         } else if (links.length === 1) {
@@ -62,11 +62,11 @@ export const run = ({src, dest, excludes = [], fullCheck = false}: StartParams) 
     else console.log('           ', item);
   });
   console.log('Full Check', fullCheck ? 'YES' : 'NO');
-  console.log({skip, link, err, total});
-  console.log('============================================================')
+  console.log({ skip, link, err, total });
+  console.log('============================================================');
 };
 
-type JsonConfig = { name: string; configs: StartParams[]; };
+type JsonConfig = { name: string; configs: StartParams[] };
 export const runWithConfig = (config: string) => {
   const pathConfig = pathResolve(config);
   const jsonConfig: JsonConfig = readJsonSync(pathConfig);
@@ -74,7 +74,7 @@ export const runWithConfig = (config: string) => {
   jsonConfig.configs.forEach((item, index) => {
     item.src = pathResolve(item.src);
     item.dest = pathResolve(item.dest);
-    item.excludes = item.excludes?.map(i => pathResolve(i));
+    item.excludes = item.excludes?.map((i) => pathResolve(i));
     console.log(`===== Task ${index + 1}/${jsonConfig.configs.length} =====`);
     run(item);
   });
