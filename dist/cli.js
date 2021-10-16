@@ -6,8 +6,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var yargs_1 = __importDefault(require("yargs"));
 var helpers_1 = require("yargs/helpers");
-var core_1 = require("@/lib/core");
-var utils_1 = require("@/lib/utils");
+var core_1 = require("./lib/core");
+var utils_1 = require("./lib/utils");
 (0, yargs_1.default)((0, helpers_1.hideBin)(process.argv))
     .command('link [src] [dest] [fullCheck]', 'Start to hard link', function (self) {
     return self
