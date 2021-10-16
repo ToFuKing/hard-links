@@ -32,11 +32,8 @@ export const hardLinkSync = (src: string, dest: string, file: string) => {
   const filePathWithoutSrc = file.substr(`${src}/`.length);
   const destFullPath = `${dest}/${filePathWithoutSrc}`;
   const destFileParentDir = destFullPath.substr(0, destFullPath.lastIndexOf('/'));
-  console.log(`- link: ${file}`);
-  console.log(`-   to: ${destFullPath}`);
   ensureDirSync(destFileParentDir);
   linkSync(file, destFullPath);
-  console.log(`-     : done...`);
 };
 
 export const pathResolve = path.resolve;

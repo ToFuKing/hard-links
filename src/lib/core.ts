@@ -41,7 +41,10 @@ export const run = ({ src, dest, excludes = [], fullCheck = false }: StartParams
     // hard link
     if (needLink) {
       try {
+        console.log(`- link: ${file}`);
+        console.log(`-   to: ${dest}`);
         hardLinkSync(src, dest, file);
+        console.log(`-     : done...`);
         link++;
       } catch (e: any) {
         console.log('-  err:', e.message);

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { run, runWithConfig } from './lib/core';
+import { run, runWithConfig } from '@/lib/core';
 import { pathResolve } from '@/lib/utils';
 
 yargs(hideBin(process.argv))

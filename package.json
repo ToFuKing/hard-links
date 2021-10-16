@@ -12,21 +12,29 @@
     "watch": "tsc -w",
     "clear": "rm -rf dist",
     "rebuild": "yarn run clear && yarn run build",
-    "eslint": "eslint --fix src"
+    "eslint": "eslint --fix src",
+    "test": "mocha -r ts-node/register test/**/*.ts"
   },
   "devDependencies": {
+    "@types/assert": "^1.5.6",
+    "@types/chai": "^4.2.22",
     "@types/fs-extra": "^9.0.13",
+    "@types/mocha": "^9.0.0",
     "@types/node": "^16.10.3",
     "@types/yargs": "^17.0.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "assert": "^2.0.0",
+    "chai": "^4.3.4",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^5.1.0",
+    "mocha": "^9.1.3",
     "prettier": "^2.4.1",
+    "ts-node": "^10.3.0",
     "typescript": "^4.4.3"
   },
   "dependencies": {
