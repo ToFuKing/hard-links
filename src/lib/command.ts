@@ -1,5 +1,5 @@
 import { execSync } from 'child_process';
-import { pathResolve } from '@/lib/utils';
+import { pathResolve } from './utils';
 
 type FindLinksResult = {
   result: boolean;

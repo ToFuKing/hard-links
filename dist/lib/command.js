@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findLinks = void 0;
 var child_process_1 = require("child_process");
-var utils_1 = require("@/lib/utils");
+var utils_1 = require("./utils");
 function findLinks(dest, ino) {
     try {
         var destFull = (0, utils_1.pathResolve)(dest);

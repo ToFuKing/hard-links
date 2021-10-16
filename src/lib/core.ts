@@ -1,6 +1,6 @@
 import { readJsonSync } from 'fs-extra';
-import { findLinks } from '@/lib/command';
-import { forEachFiles, hardLinkSync, pathResolve } from '@/lib/utils';
+import { findLinks } from './command';
+import { forEachFiles, hardLinkSync, pathResolve } from './utils';
 
 type StartParams = {
   src: string;

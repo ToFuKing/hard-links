@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runWithConfig = exports.run = void 0;
 var fs_extra_1 = require("fs-extra");
-var command_1 = require("@/lib/command");
-var utils_1 = require("@/lib/utils");
+var command_1 = require("./command");
+var utils_1 = require("./utils");
 var run = function (_a) {
     var src = _a.src, dest = _a.dest, _b = _a.excludes, excludes = _b === void 0 ? [] : _b, _c = _a.fullCheck, fullCheck = _c === void 0 ? false : _c;
     console.log('========================== Start ===========================');
