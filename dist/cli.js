@@ -23,6 +23,6 @@ var utils_1 = require("./lib/utils");
     return self.positional('config', { describe: '', type: 'string', alias: 'c' }).demandOption('config');
 }, function (argv) {
     var config = (0, utils_1.pathResolve)(argv.config);
-    (0, core_1.runWithConfig)(config);
+    (0, core_1.runWithConfigFile)(config);
 })
     .parse();

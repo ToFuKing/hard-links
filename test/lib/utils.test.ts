@@ -16,19 +16,22 @@ before(() => {
 describe('Testing lib/utils.ts', () => {
   describe('forEachFiles', () => {
     it('There are 3 files', () => {
-      const filesLen = forEachFiles(ROOT_TESTING).length;
+      const filesLen = forEachFiles({ folder: ROOT_TESTING }).length;
       expect(filesLen).to.be.equal(3);
     });
 
     it("It's all.txt files", () => {
-      forEachFiles(ROOT_TESTING, ({ file }) => {
-        expect(file).to.match(/.txt$/);
+      forEachFiles({
+        folder: ROOT_TESTING,
+        callback: ({ file }) => {
+          expect(file).to.match(/.txt$/);
+        },
       });
     });
   });
 
   describe('hardLinkSync', () => {
-    it('Should be links', ()=>{
+    it('Should be links', () => {
       // TODO
     });
   });

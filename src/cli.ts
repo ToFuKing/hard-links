@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { run, runWithConfig } from './lib/core';
+import { run, runWithConfigFile } from './lib/core';
 import { pathResolve } from './lib/utils';
 
 yargs(hideBin(process.argv))
@@ -28,7 +28,7 @@ yargs(hideBin(process.argv))
     },
     (argv) => {
       const config = pathResolve(argv.config);
-      runWithConfig(config);
+      runWithConfigFile(config);
     },
   )
   .parse();

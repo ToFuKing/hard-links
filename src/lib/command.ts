@@ -1,16 +1,20 @@
 import { execSync } from 'child_process';
 import { pathResolve } from './utils';
 
+type FindLinksParams = {
+  dest: string;
+  ino: number;
+};
 type FindLinksResult = {
   result: boolean;
   message: string;
   code?: 'UNKNOWN' | 'FILE_EXIST' | 'NO_SUCH_FILE_OR_DIRECTORY';
   data?: {
-    ino: string;
+    ino: number;
     links: string[];
   };
 };
-export function findLinks(dest: string, ino: string): FindLinksResult {
+export function findLinks({ dest, ino }: FindLinksParams): FindLinksResult {
   try {
     const destFull = pathResolve(dest);
     const output = execSync(`find "${destFull}" -inum ${ino}`).toString();

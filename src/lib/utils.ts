@@ -4,8 +4,13 @@ import { ensureDirSync } from 'fs-extra';
 
 type FileStat = { file: string; stat: Stats };
 type ForEachFilesCallback = (params: FileStat) => void;
+type ForEachFilesParams = {
+  folder: string;
+  excludes?: string[];
+  callback?: ForEachFilesCallback;
+};
 
-export const forEachFiles = (folder: string, callback?: ForEachFilesCallback) => {
+export const forEachFiles = ({ folder, excludes = [], callback }: ForEachFilesParams) => {
   const folderFullPath = pathResolve(folder);
   if (!existsSync(folderFullPath)) throw new Error(`folder not found`);
   // inner method
@@ -15,6 +20,8 @@ export const forEachFiles = (folder: string, callback?: ForEachFilesCallback) =>
       const fullPath = `${root}/${item}`;
       const stat = statSync(fullPath);
       if (stat.isDirectory()) {
+        if (excludes.some((excludePath: string) => fullPath === excludePath)) return;
+
         files = [...files, ...__readFiles(fullPath)];
       } else if (stat.isFile()) {
         const temp = { file: fullPath, stat };
@@ -28,12 +35,13 @@ export const forEachFiles = (folder: string, callback?: ForEachFilesCallback) =>
   return __readFiles(folderFullPath);
 };
 
-export const hardLinkSync = (src: string, dest: string, file: string) => {
+export const hardLinkSync = (src: string, dest: string, file: string): string => {
   const filePathWithoutSrc = file.substr(`${src}/`.length);
   const destFullPath = `${dest}/${filePathWithoutSrc}`;
   const destFileParentDir = destFullPath.substr(0, destFullPath.lastIndexOf('/'));
   ensureDirSync(destFileParentDir);
   linkSync(file, destFullPath);
+  return destFullPath;
 };
 
 export const pathResolve = path.resolve;
