@@ -6,11 +6,13 @@ type FileStat = { file: string; stat: Stats };
 type ForEachFilesCallback = (params: FileStat) => void;
 type ForEachFilesParams = {
   folder: string;
+  includesFolder?: string[];
   excludes?: string[];
   callback?: ForEachFilesCallback;
 };
 
-export const forEachFiles = ({ folder, excludes = [], callback }: ForEachFilesParams) => {
+export const forEachFiles = (_params: ForEachFilesParams) => {
+  const { folder, includesFolder = [], excludes = [], callback } = _params;
   const folderFullPath = pathResolve(folder);
   if (!existsSync(folderFullPath)) throw new Error(`folder not found`);
   // inner method
@@ -20,10 +22,12 @@ export const forEachFiles = ({ folder, excludes = [], callback }: ForEachFilesPa
       const fullPath = `${root}/${item}`;
       const stat = statSync(fullPath);
       if (stat.isDirectory()) {
-        if (excludes.some((excludePath: string) => fullPath === excludePath)) return;
+        if (excludes.length > 0) if (excludes.includes(fullPath)) return;
 
         files = [...files, ...__readFiles(fullPath)];
       } else if (stat.isFile()) {
+        if (includesFolder.length > 0) if (!includesFolder.some((i) => fullPath.startsWith(i))) return;
+
         const temp = { file: fullPath, stat };
         if (callback) callback(temp);
         files.push(temp);

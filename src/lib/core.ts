@@ -5,20 +5,25 @@ import { forEachFiles, hardLinkSync, pathResolve } from './utils';
 type RunConfig = {
   src: string;
   dest: string;
+  includesFolder?: string[];
   excludes?: string[];
   fullCheck?: boolean;
-  cacheLinks?: boolean | {
-    enabled: boolean;
-    cachePath: string;
-  };
+  cacheLinks?:
+    | boolean
+    | {
+        enabled: boolean;
+        cachePath: string;
+      };
 };
 
-export const run = ({ src, dest, excludes = [], fullCheck = false }: RunConfig) => {
-  console.log('========================== Start ===========================');
+export const run = (_config: RunConfig) => {
+  const { src, dest, includesFolder = [], excludes = [], fullCheck = false } = _config;
 
+  console.log('========================== Start ===========================');
   let [skip, link, err, total] = [0, 0, 0, 0];
   forEachFiles({
     folder: src,
+    includesFolder,
     excludes,
     callback: ({ file, stat }) => {
       // Check whether hard links are required
@@ -69,6 +74,10 @@ export const run = ({ src, dest, excludes = [], fullCheck = false }: RunConfig) 
     if (index === 0) console.log('  Excludes', item);
     else console.log('          ', item);
   });
+  includesFolder?.forEach((item, index) => {
+    if (index === 0) console.log('  Includes', item);
+    else console.log('          ', item);
+  });
   console.log('Full Check', fullCheck ? 'YES' : 'NO');
   console.log({ skip, link, err, total });
   console.log('============================================================');
@@ -80,6 +89,7 @@ export const runWithConfig = (jsonConfig: JsonConfig) => {
     config.src = pathResolve(config.src);
     config.dest = pathResolve(config.dest);
     config.excludes = config.excludes?.map((i) => pathResolve(i));
+    config.includesFolder = config.includesFolder?.map((i) => pathResolve(i));
     console.log(`===== Task ${index + 1}/${jsonConfig.configs.length} =====`);
     run(config);
   });

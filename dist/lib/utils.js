@@ -16,8 +16,8 @@ exports.pathResolve = exports.hardLinkSync = exports.forEachFiles = void 0;
 var path_1 = __importDefault(require("path"));
 var fs_1 = require("fs");
 var fs_extra_1 = require("fs-extra");
-var forEachFiles = function (_a) {
-    var folder = _a.folder, _b = _a.excludes, excludes = _b === void 0 ? [] : _b, callback = _a.callback;
+var forEachFiles = function (_params) {
+    var folder = _params.folder, _a = _params.includesFolder, includesFolder = _a === void 0 ? [] : _a, _b = _params.excludes, excludes = _b === void 0 ? [] : _b, callback = _params.callback;
     var folderFullPath = (0, exports.pathResolve)(folder);
     if (!(0, fs_1.existsSync)(folderFullPath))
         throw new Error("folder not found");
@@ -28,11 +28,15 @@ var forEachFiles = function (_a) {
             var fullPath = root + "/" + item;
             var stat = (0, fs_1.statSync)(fullPath);
             if (stat.isDirectory()) {
-                if (excludes.some(function (excludePath) { return fullPath === excludePath; }))
-                    return;
+                if (excludes.length > 0)
+                    if (excludes.includes(fullPath))
+                        return;
                 files = __spreadArray(__spreadArray([], files, true), __readFiles(fullPath), true);
             }
             else if (stat.isFile()) {
+                if (includesFolder.length > 0)
+                    if (!includesFolder.some(function (i) { return fullPath.startsWith(i); }))
+                        return;
                 var temp = { file: fullPath, stat: stat };
                 if (callback)
                     callback(temp);

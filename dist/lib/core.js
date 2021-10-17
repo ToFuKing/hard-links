@@ -4,12 +4,13 @@ exports.runWithConfigFile = exports.runWithConfig = exports.run = void 0;
 var fs_extra_1 = require("fs-extra");
 var command_1 = require("./command");
 var utils_1 = require("./utils");
-var run = function (_a) {
-    var src = _a.src, dest = _a.dest, _b = _a.excludes, excludes = _b === void 0 ? [] : _b, _c = _a.fullCheck, fullCheck = _c === void 0 ? false : _c;
+var run = function (_config) {
+    var src = _config.src, dest = _config.dest, _a = _config.includesFolder, includesFolder = _a === void 0 ? [] : _a, _b = _config.excludes, excludes = _b === void 0 ? [] : _b, _c = _config.fullCheck, fullCheck = _c === void 0 ? false : _c;
     console.log('========================== Start ===========================');
     var _d = [0, 0, 0, 0], skip = _d[0], link = _d[1], err = _d[2], total = _d[3];
     (0, utils_1.forEachFiles)({
         folder: src,
+        includesFolder: includesFolder,
         excludes: excludes,
         callback: function (_a) {
             var file = _a.file, stat = _a.stat;
@@ -68,6 +69,12 @@ var run = function (_a) {
         else
             console.log('          ', item);
     });
+    includesFolder === null || includesFolder === void 0 ? void 0 : includesFolder.forEach(function (item, index) {
+        if (index === 0)
+            console.log('  Includes', item);
+        else
+            console.log('          ', item);
+    });
     console.log('Full Check', fullCheck ? 'YES' : 'NO');
     console.log({ skip: skip, link: link, err: err, total: total });
     console.log('============================================================');
@@ -75,10 +82,11 @@ var run = function (_a) {
 exports.run = run;
 var runWithConfig = function (jsonConfig) {
     jsonConfig.configs.forEach(function (config, index) {
-        var _a;
+        var _a, _b;
         config.src = (0, utils_1.pathResolve)(config.src);
         config.dest = (0, utils_1.pathResolve)(config.dest);
         config.excludes = (_a = config.excludes) === null || _a === void 0 ? void 0 : _a.map(function (i) { return (0, utils_1.pathResolve)(i); });
+        config.includesFolder = (_b = config.includesFolder) === null || _b === void 0 ? void 0 : _b.map(function (i) { return (0, utils_1.pathResolve)(i); });
         console.log("===== Task " + (index + 1) + "/" + jsonConfig.configs.length + " =====");
         (0, exports.run)(config);
     });
