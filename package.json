@@ -1,6 +1,6 @@
 {
   "name": "hard-links",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "main": "src/index.js",
   "license": "MIT",
   "bin": {
@@ -13,7 +13,8 @@
     "clear": "rm -rf dist",
     "rebuild": "yarn run clear && yarn run build",
     "eslint": "eslint --fix src",
-    "test": "mocha -r ts-node/register test/**/*.ts"
+    "test": "mocha -r ts-node/register test/**/*.ts",
+    "publish": "npm publish --registry=\"https://registry.npmjs.org/\""
   },
   "devDependencies": {
     "@types/assert": "^1.5.6",
