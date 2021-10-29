@@ -1,38 +1,16 @@
 import { expect } from 'chai';
-import { emptyDirSync, outputFileSync } from 'fs-extra';
+import { describe, it } from 'mocha';
+import { createCatalog, TESTING_ROOT_PATH } from '../helper';
 import { forEachFiles } from '../../src/lib/utils';
-import { it } from 'mocha';
 
-const ROOT_TESTING = 'testing';
-const TESTING_FILES = ['src/hello.txt', 'src/hard.txt', 'src/links.txt'];
+let CATALOG_FILES = [];
 before(() => {
-  console.log(`[before] Clear ${ROOT_TESTING}/, Build testing files...`);
-  emptyDirSync(ROOT_TESTING);
-  TESTING_FILES.forEach((_file) => {
-    outputFileSync(`${ROOT_TESTING}/${_file}`, _file);
-  });
+  CATALOG_FILES = createCatalog();
 });
 
-describe('Testing lib/utils.ts', () => {
-  describe('forEachFiles', () => {
-    it('There are 3 files', () => {
-      const filesLen = forEachFiles({ folder: ROOT_TESTING }).length;
-      expect(filesLen).to.be.equal(3);
-    });
-
-    it("It's all.txt files", () => {
-      forEachFiles({
-        folder: ROOT_TESTING,
-        callback: ({ file }) => {
-          expect(file).to.match(/.txt$/);
-        },
-      });
-    });
-  });
-
-  describe('hardLinkSync', () => {
-    it('Should be links', () => {
-      // TODO
-    });
+describe('Testing lib/utils', () => {
+  it('Files length should be equal!', () => {
+    const filesLen = forEachFiles({ folder: TESTING_ROOT_PATH }).length;
+    expect(filesLen).to.be.equal(CATALOG_FILES.length);
   });
 });

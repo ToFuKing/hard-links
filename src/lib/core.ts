@@ -17,7 +17,9 @@ type RunConfig = {
 };
 
 export const run = (_config: RunConfig) => {
-  const { src, dest, includesFolder = [], excludes = [], fullCheck = false } = _config;
+  let { src, dest, includesFolder = [], excludes = [], fullCheck = false } = _config;
+  src = pathResolve(src);
+  dest = pathResolve(dest);
 
   console.log('========================== Start ===========================');
   let [skip, link, err, total] = [0, 0, 0, 0];
